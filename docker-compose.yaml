@@ -1,0 +1,42 @@
+services:
+  database:
+    image: postgres
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin1234
+      POSTGRES_DB: mydb
+  adminer:
+    image: adminer
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - 8000:8080
+  scraper:
+    build: ./scraper
+    ports:
+      - 3001:3001
+    depends_on:
+      - database
+  server:
+    build: ./server
+    ports:
+      - 5000:5000
+    depends_on:
+      - database
+  client:
+    build: ./client
+    ports:
+      - 5173:5173
+    depends_on:
+      - server
+  nginx:
+    build: ./nginx
+    ports:
+      - 8080:80
+    depends_on:
+      - server
+      - client

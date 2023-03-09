@@ -1,0 +1,3 @@
+# Project exclude paths
+/scraper/node_modules/
+/server/node_modules/
